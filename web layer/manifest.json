@@ -1,0 +1,11 @@
+{
+    "name": "Locksmith Password Manager",
+    "version": "1.0.0",
+    "description": "Simple Password Manager - Server Required",
+    "manifest_version": 3,
+    "author": "Owen Russell-Lanning",
+    "action": {
+        "default_popup": "index.html",
+        "default_title": "Locksmith"
+    }
+}
