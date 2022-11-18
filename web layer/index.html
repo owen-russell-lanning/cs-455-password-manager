@@ -11,6 +11,7 @@
             --secondary-color: #212020;
             --text-color: white;
             --secondary-text-color: #949494;
+            --tertiary-color: #242323;
         }
 
         body {
@@ -39,7 +40,16 @@
             align-items: center;
             padding-left: 10px;
             border-bottom: var(--highlight-color) 2px solid;
+        } 
+
+
+
+
+        #header >img{
+            height: 40%;
+            margin-right: 10px;
         }
+        
 
         #page-content {
             height: 100%;
@@ -111,6 +121,29 @@
         .btn:active {
             transform: scale(0.95, 0.95);
         }
+
+        .two-value-selector{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            background: linear-gradient(90deg,var(--highlight-color) 40%, var(--tertiary-color) 40%);
+            width: fit-content;
+        }   
+
+        .two-value-selector > *{
+            padding: 7px 15px;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        
+
+        .two-value-selector > *:last-child:hover ~ .two-value-selector{
+            background: linear-gradient(90deg,var(--tertiary-color) 40%, var(--highlight-color) 40%);
+        }
+
+
+
     </style>
 
 </head>
@@ -118,11 +151,17 @@
 <body>
     <div id="locksmith-body">
         <div id="header">
+            <img src="./icons/lock.png">
             <h2>Locksmith</h2>
+           
         </div>
         <div id="page-content">
             <!-- open popup with login page at first-->
             <div id="login-page">
+                <div style="margin-bottom: 20px;" class="two-value-selector">
+                    <h2 >Login</h2>
+                    <h2>New User</h2>
+                </div>
                 <div class="input-icon-wrapper">
                     <img src="./icons/user.png">
                     <input placeholder="Username">
