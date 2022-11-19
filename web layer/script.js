@@ -76,15 +76,69 @@ function init_login_page() {
 
         window.login.password = password; //set password
 
+
+        document.getElementById("login-create-user-password-page").style.visibility = "hidden";
+
         //send to database
-        create_user(window.login.username, window.login.password, (api_key) => {
-            //store api key locally
-            localStorage.setItem("api_key", api_key);
-        });
+        create_user(window.login.username, window.login.password, receive_api_key);
 
     }
+
+
+    //init login button
+    document.getElementById("login-button").onclick = function () {
+        document.getElementById("invalid-login-error").classList.add("hidden");
+
+        //get username and password
+        var username = document.getElementById("login-username-input").value;
+        var password = document.getElementById("login-password-input").value;
+
+        if (username.trim() == "") { //no username entered
+            return;
+        }
+        if (password.trim() == "") {//no password entered
+            return;
+        }
+
+
+        //change to loading
+        this.replaceWith(DEFAULT_LOADING);
+
+        is_valid_login(username, password, (api_key) => {
+            DEFAULT_LOADING.replaceWith(this);
+            if (!api_key) {
+                document.getElementById("invalid-login-error").classList.remove("hidden");
+            }
+            else {
+                receive_api_key(api_key);
+            }
+        });
+    }
+
+
 }
 
+/**
+ * receives the api key and stores the current login and key in local storage. then loads the dashboard
+ * @param {*} api_key 
+ */
+function receive_api_key(api_key) {
+    //store api key locally and login
+    localStorage.setItem("api_key", api_key);
+    localStorage.setItem("login", window.login); //TODO: ENCRYPT LOGIN
+
+    //load dashboard as current page now that logged in
+    load_dashboard();
+}
+
+/**
+ * loads the dashboard as the main page
+ */
+function load_dashboard() {
+
+    //hide all pages
+    document.getElementById("login-page").style.visibility = "hidden";
+}
 
 
 
@@ -107,6 +161,17 @@ function create_default_loading_img() {
  */
 function user_exists(username, callback) {
     callback(false);
+}
+
+
+/**
+ * if the login is valid, executes callback with api key as result
+ * @param {*} username 
+ * @param {*} password 
+ * @param {*} callback 
+ */
+function is_valid_login(username, password, callback) {
+    callback("key");
 }
 
 

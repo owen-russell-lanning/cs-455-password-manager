@@ -164,11 +164,23 @@
             cursor: pointer;
             border: solid 2px var(--highlight-color);
             border-radius: 8px;
+            background-color: var(--tertiary-color);
 
         }
 
         .toggle-btn:is(.selected) {
+            animation: toggle-btn-toggle 0.3s;
             background-color: var(--highlight-color);
+        }
+
+        @keyframes toggle-btn-toggle {
+            0%{
+                background-color: transparent;
+            }
+
+            100%{
+                background-color: var(--highlight-color);
+            }
         }
 
         #login-method-select {
@@ -213,13 +225,15 @@
                 <div id="login-user-page" class="sub-page-content">
                     <div class="input-icon-wrapper">
                         <img src="./icons/user.png">
-                        <input type="text" placeholder="Username">
+                        <input id="login-username-input" type="text" placeholder="Username">
                     </div>
                     <div class="input-icon-wrapper">
                         <img src="./icons/lock.png">
-                        <input type="text" placeholder="Password">
+                        <input id="login-password-input" type="password" placeholder="Password">
                     </div>
-                    <h2 class="btn">Login</h2>
+                    <h2 id="login-button" class="btn">Login</h2>
+                    <br>
+                    <h4 class="error-message hidden" id="invalid-login-error">Invalid Login</h4>
                 </div>
                 <div id="login-create-user-page" class="sub-page-content" style="visibility: hidden;">
                     <h3>Enter a Username to Begin</h3>
@@ -244,7 +258,7 @@
                     <br>
                     <div class="input-icon-wrapper">
                         <img src="./icons/lock.png">
-                        <input type="text" placeholder="Password" id="create-user-password-input">
+                        <input type="password" placeholder="Password" id="create-user-password-input">
                     </div>
                     <img id="finalize-user-button" class="img-btn" style="height: 35px;" src="./icons/right.png">
                 </div>
