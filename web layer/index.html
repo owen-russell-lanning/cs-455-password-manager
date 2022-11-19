@@ -62,9 +62,9 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
             position: relative;
+            align-items: center;
+
         }
 
         #login-page>.input-icon-wrapper>input {
@@ -73,6 +73,22 @@
 
 
         }
+
+        #login-page>.sub-page-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            position: absolute;
+            top: 100px;
+            bottom: 10px;
+            height: fit-content;
+
+
+        }
+
+
 
         .input-icon-wrapper {
             display: flex;
@@ -96,22 +112,22 @@
         }
 
         input {
-           
+
             background-color: transparent;
             text-align: start;
             margin: 0;
             border: none;
             color: var(--text-color);
             padding: 7px 10px;
-       
-        
 
-            
+
+
+
 
 
         }
 
-   
+
 
         input::placeholder {
             text-align: start;
@@ -124,44 +140,58 @@
             cursor: pointer;
             user-select: none;
             border-radius: 8px;
+            width: fit-content;
         }
 
-        .btn:hover {
+        .btn:hover,
+        .img-btn:hover {
             filter: brightness(95%);
         }
 
-        .btn:active {
+        .btn:active,
+        .img-btn:active {
             transform: scale(0.95, 0.95);
         }
 
+        .img-btn {
+            cursor: pointer;
+        }
 
-        .toggle-btn{
+
+        .toggle-btn {
             padding: 5px 10px;
             user-select: none;
             cursor: pointer;
             border: solid 2px var(--highlight-color);
             border-radius: 8px;
-           
+
         }
 
-        .toggle-btn:is(.selected){
+        .toggle-btn:is(.selected) {
             background-color: var(--highlight-color);
         }
 
-        #login-method-select{
+        #login-method-select {
             top: 15px;
             position: absolute;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             width: fit-content;
+            z-index: 2;
         }
 
-        #login-method-select > h2:last-child{
+        #login-method-select>h2:last-child {
             margin-left: 20px;
         }
 
-   
+        .error-message {
+            color: red;
+        }
+
+        .hidden {
+            visibility: hidden;
+        }
     </style>
 
 </head>
@@ -180,15 +210,45 @@
                     <h2 id="login-page-button" class="toggle-btn selected">Login</h2>
                     <h2 id="create-user-page-button" class="toggle-btn">New User</h2>
                 </div>
-                <div class="input-icon-wrapper">
-                    <img src="./icons/user.png">
-                    <input type="text" placeholder="Username">
+                <div id="login-user-page" class="sub-page-content">
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/user.png">
+                        <input type="text" placeholder="Username">
+                    </div>
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/lock.png">
+                        <input type="text" placeholder="Password">
+                    </div>
+                    <h2 class="btn">Login</h2>
                 </div>
-                <div class="input-icon-wrapper">
-                    <img src="./icons/lock.png">
-                    <input type="text" placeholder="Password">
+                <div id="login-create-user-page" class="sub-page-content" style="visibility: hidden;">
+                    <h3>Enter a Username to Begin</h3>
+                    <br>
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/user.png">
+                        <input type="text" placeholder="Username" id="create-user-username-input">
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <img id="create-user-button" class="img-btn" style="height: 35px;" src="./icons/right.png">
+                    <br>
+                    <h4 class="error-message hidden" id="create-user-exists-error">Username Already Exists</h4>
                 </div>
-                <h2 class="btn">Login</h2>
+                <div id="login-create-user-password-page" class="sub-page-content" style="visibility: hidden;">
+                    <h2 style="text-align: center;" id="create-password-text"></h2>
+                    <br>
+                    <br>
+                    <h3>Please Create a Password</h3>
+                    <br>
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/lock.png">
+                        <input type="text" placeholder="Password" id="create-user-password-input">
+                    </div>
+                    <img id="finalize-user-button" class="img-btn" style="height: 35px;" src="./icons/right.png">
+                </div>
+
             </div>
         </div>
 
