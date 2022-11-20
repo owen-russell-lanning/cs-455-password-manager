@@ -137,7 +137,10 @@ function receive_api_key(api_key) {
 async function load_dashboard() {
 
     //remove login page
-    document.getElementById("login-page").remove();
+    var login_page = document.getElementById("login-page");
+    if(login_page){
+        login_page.remove();
+    }
 
     //show dashboard page
     document.getElementById("dashboard-page").style.visibility = "visible";
@@ -186,7 +189,10 @@ async function load_dashboard() {
             login_indictator.style.backgroundColor = "green";
 
             //display valid login page
-            document.getElementById("dashboard-no-login-page").remove();
+            var no_login_page = document.getElementById("dashboard-no-login-page")
+            if(no_login_page){  
+                no_login_page.remove();
+            }
             document.getElementById("dashboard-valid-login-page").classList.remove("hidden");
 
 
@@ -200,12 +206,18 @@ async function load_dashboard() {
             unhide_pass_btn.onmousedown = () => { unhide_valid_login_password() };
             unhide_pass_btn.onmouseup = () => { hide_valid_login_password() };
 
-            //init copy buttons
+            //init copy buttons. copy input values on click
             document.getElementById("copy-valid-username").onclick = () => {
                 document.getElementById("site-valid-login-username-input").select();
                 document.execCommand('copy');
                 document.getElementById("site-valid-login-username-input").blur();
             }
+
+            document.getElementById("copy-valid-username").addEventListener("keyup", function(event) {
+                if(event.code === "Enter") {
+                    this.blur();
+                }
+            });
 
             document.getElementById("copy-valid-password").onclick = () => {
                 var pass_inp = document.getElementById("site-valid-login-password-input");
@@ -214,6 +226,49 @@ async function load_dashboard() {
                 document.execCommand('copy');
                 pass_inp.blur();
                 pass_inp.type = "password";
+            }
+
+            document.getElementById("site-valid-login-username-input").addEventListener("keyup", function(event) {
+                console.log(event.code);
+                if(event.code === "Enter") {
+                    this.blur();
+                }
+            });
+
+
+            document.getElementById("site-valid-login-password-input").addEventListener("keyup", function(event) {
+                console.log(event.code);
+                if(event.code === "Enter") {
+                    this.blur();
+                }
+            });
+            //init edit username and password buttons
+            document.getElementById("edit-username-button").onclick = () => {
+                var inp = document.getElementById("site-valid-login-username-input");
+                inp.removeAttribute("readonly");
+                inp.focus();
+                inp.onblur = () => {
+                    inp.setAttribute("readonly", "true");
+                    set_login(login.username, url.hostname, inp.value, is_login.password, () => {
+                        //reload dashboard
+                        load_dashboard();
+                    });
+                }
+            }
+
+            document.getElementById("edit-password-button").onclick = () => {
+                var inp = document.getElementById("site-valid-login-password-input");
+                inp.removeAttribute("readonly");
+                inp.focus();
+                inp.onblur = () => {
+                    inp.setAttribute("readonly", "true");
+                    set_login(login.username, url.hostname, is_login.username, inp.value, () => {
+                        //reload dashboard
+                        load_dashboard();
+                    });
+                }
+
+
             }
 
 

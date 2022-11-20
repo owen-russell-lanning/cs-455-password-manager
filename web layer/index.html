@@ -230,7 +230,7 @@
             background-color: var(--highlight-color);
         }
 
-        #dashboard-valid-login-page>.input-icon-wrapper,
+        #dashboard-valid-login-page>div>.input-icon-wrapper,
         #dashboard-no-login-page>.input-icon-wrapper {
             margin: 10px 0px;
 
@@ -330,16 +330,25 @@
                 <div id="dashboard-valid-login-page" class="sub-page-content hidden">
                     <br>
                     <br>
-                    <div class="input-icon-wrapper">
-                        <img src="./icons/user.png">
-                        <input id="site-valid-login-username-input" type="text" placeholder="Username" readonly style="width: 185px;">
-                        <img id="copy-valid-username" class="img-btn" src="./icons/copy.png">
+                    <div style="display: flex; flex-direction: row; align-items: center; height: fit-content;">
+                        <div class="input-icon-wrapper">
+                            <img src="./icons/user.png">
+                            <input id="site-valid-login-username-input" type="text" placeholder="Username" readonly
+                                style="width: 185px;">
+                            <img id="copy-valid-username" class="img-btn" src="./icons/copy.png">
+                        </div>
+                        <img class="img-btn" id="edit-username-button" src="./icons/edit.png" style="margin-left: 10px; height: 22px;">
                     </div>
-                    <div class="input-icon-wrapper" >
-                        <img src="./icons/lock.png">
-                        <input id="site-valid-login-password-input" type="password" placeholder="Password" readonly>
-                        <img id="site-valid-login-unhide" class="img-btn" src="./icons/seen.png" style="margin-right: 5px;">
-                        <img id="copy-valid-password" class="img-btn" src="./icons/copy.png">
+                    <div  style="display: flex; flex-direction: row; align-items: center; height: fit-content;">
+                        <div class="input-icon-wrapper">
+                            <img src="./icons/lock.png">
+                            <input id="site-valid-login-password-input" type="password" placeholder="Password" readonly>
+                            <img id="site-valid-login-unhide" class="img-btn" src="./icons/seen.png"
+                                style="margin-right: 5px;">
+                            <img id="copy-valid-password" class="img-btn" src="./icons/copy.png">
+
+                        </div>
+                        <img class="img-btn" id="edit-password-button" src="./icons/edit.png"style="margin-left: 10px; height: 22px;">
                     </div>
                 </div>
             </div>
