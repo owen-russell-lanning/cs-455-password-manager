@@ -7,5 +7,6 @@
     "action": {
         "default_popup": "index.html",
         "default_title": "Locksmith"
-    }
+    },
+    "permissions": ["tabs", "storage"]
 }

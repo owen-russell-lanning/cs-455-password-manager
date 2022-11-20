@@ -42,6 +42,7 @@
             align-items: center;
             padding-left: 10px;
             border-bottom: var(--highlight-color) 2px solid;
+            filter: drop-shadow(0 0 5px black);
         }
 
 
@@ -56,10 +57,11 @@
         #page-content {
             height: 100%;
             background-color: var(--primary-color);
+            overflow: hidden;
         }
 
         #login-page {
-            height: 100%;
+            height: fit-content;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -111,6 +113,10 @@
             margin: 0;
         }
 
+        .input-icon-wrapper>* {
+            user-select: none;
+        }
+
         input {
 
             background-color: transparent;
@@ -150,11 +156,12 @@
 
         .btn:active,
         .img-btn:active {
-            transform: scale(0.95, 0.95);
+            transform: scale(0.9, 0.9);
         }
 
         .img-btn {
             cursor: pointer;
+            width: fit-content;
         }
 
 
@@ -165,6 +172,7 @@
             border: solid 2px var(--highlight-color);
             border-radius: 8px;
             background-color: var(--tertiary-color);
+            filter: drop-shadow(0 0 5px black);
 
         }
 
@@ -174,11 +182,11 @@
         }
 
         @keyframes toggle-btn-toggle {
-            0%{
+            0% {
                 background-color: transparent;
             }
 
-            100%{
+            100% {
                 background-color: var(--highlight-color);
             }
         }
@@ -193,9 +201,7 @@
             z-index: 2;
         }
 
-        #login-method-select>h2:last-child {
-            margin-left: 20px;
-        }
+
 
         .error-message {
             color: red;
@@ -203,6 +209,38 @@
 
         .hidden {
             visibility: hidden;
+            height: 0;
+            overflow: hidden;
+        }
+
+        #dashboard-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+
+        .bubble-display {
+            color: var(--text-color);
+            border-radius: 18px;
+            padding: 5px 10px;
+            width: fit-content;
+            user-select: none;
+            background-color: var(--highlight-color);
+        }
+
+        #dashboard-valid-login-page>.input-icon-wrapper,
+        #dashboard-no-login-page>.input-icon-wrapper {
+            margin: 10px 0px;
+
+        }
+
+        #dashboard-page>.sub-page-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: fit-content;
         }
     </style>
 
@@ -220,8 +258,10 @@
             <div id="login-page">
                 <div id="login-method-select" style="margin-bottom: 20px;">
                     <h2 id="login-page-button" class="toggle-btn selected">Login</h2>
-                    <h2 id="create-user-page-button" class="toggle-btn">New User</h2>
+                    <h2 id="create-user-page-button" style="margin-left: 20px;" class="toggle-btn">New User</h2>
                 </div>
+                <br>
+                <br>
                 <div id="login-user-page" class="sub-page-content">
                     <div class="input-icon-wrapper">
                         <img src="./icons/user.png">
@@ -263,6 +303,45 @@
                     <img id="finalize-user-button" class="img-btn" style="height: 35px;" src="./icons/right.png">
                 </div>
 
+            </div>
+            <!-- dashboard is the main view for a site once user is logged in-->
+            <div id="dashboard-page" style="visibility: hidden;">
+                <br>
+                <div style="display: flex;">
+                    <h4 class="bubble-display" id="dashboard-site"></h4>
+                    <h4 class="bubble-display" id="dashboard-login-indicator" style="margin-left: 10px;"></h4>
+                </div>
+                <div id="dashboard-no-login-page" class="sub-page-content hidden">
+                    <br>
+                    <br>
+                    <h3>Set a Login for this Page</h3>
+                    <br>
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/user.png">
+                        <input id="site-login-username-input" type="text" placeholder="Username">
+                    </div>
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/lock.png">
+                        <input id="site-login-password-input" type="password" placeholder="Password">
+                    </div>
+                    <br>
+                    <h3 id="dashboard-create-login-btn" class="btn">Create</h3>
+                </div>
+                <div id="dashboard-valid-login-page" class="sub-page-content hidden">
+                    <br>
+                    <br>
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/user.png">
+                        <input id="site-valid-login-username-input" type="text" placeholder="Username" readonly style="width: 185px;">
+                        <img id="copy-valid-username" class="img-btn" src="./icons/copy.png">
+                    </div>
+                    <div class="input-icon-wrapper" >
+                        <img src="./icons/lock.png">
+                        <input id="site-valid-login-password-input" type="password" placeholder="Password" readonly>
+                        <img id="site-valid-login-unhide" class="img-btn" src="./icons/seen.png" style="margin-right: 5px;">
+                        <img id="copy-valid-password" class="img-btn" src="./icons/copy.png">
+                    </div>
+                </div>
             </div>
         </div>
 
