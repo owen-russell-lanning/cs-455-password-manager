@@ -52,3 +52,18 @@ def get_login():
     login = None #langstons get login method
 
     return jsonify(login)
+
+#Set Login Request 
+@app.route('/setLogin', methods = ['GET', 'POST'])
+def set_login():
+    uid = request.args.get('uid', None)
+    website = request.args.get('website', None)
+    user = request.args.get('user', None)
+    password = request.args.get('password', None)
+    api_key = request.args.get('apiKey', None)
+
+    login = None #langstons set method
+
+    return jsonify(login)
+
+
