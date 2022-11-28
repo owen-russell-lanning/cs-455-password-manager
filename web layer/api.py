@@ -66,4 +66,16 @@ def set_login():
 
     return jsonify(login)
 
+#Create Login Request 
+@app.route('/createLogin', methods = ['GET', 'POST'])
+def create_login():
+    
+    uid = request.args.get('uid', None)
+    website = request.args.get('website', None)
+    user = request.args.get('user', None)
+    api_key = request.args.get('apiKey',None)
+
+    password = None # langstons create user method
+
+    return jsonify(password)
 
