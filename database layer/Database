@@ -25,7 +25,7 @@ def initialize():
 # @param uid String that is username of new user
 # @param pword String that is a password of new user 
 # @return api is a String apiKey that the user needs to use to login
-def newUser(uid, pword,):
+def newUser(uid, pword):
     api = Fernet.generate_key()
     cypher = Fernet(api)
     cid = cypher.encrypt(uid)

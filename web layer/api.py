@@ -3,7 +3,7 @@ __date__ = "November 2022"
 
 import json
 from flask import Flask, jsonify, request
-
+import Database as db
 
 app = Flask(__name__)
 
@@ -15,7 +15,7 @@ def new_user():
     uid = request.args.get('uid', None)
     password = request.args.get('password', None)
     
-    api_key =  None #langsons new user method 
+    api_key =  None #langstons new user method 
 
     return jsonify(api_key)
 
@@ -78,4 +78,6 @@ def create_login():
     password = None # langstons create user method
 
     return jsonify(password)
+
+db.initialize()
 
