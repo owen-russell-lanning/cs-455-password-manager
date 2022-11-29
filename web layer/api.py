@@ -49,7 +49,7 @@ def get_login():
     website = request.args.get('website', None)
     api_key = request.args.get('apiKey', None)
 
-    login = None #langstons get login method
+    login = db.getLogin(uid, website, api_key) #langstons get login method
 
     return jsonify(login)
 
