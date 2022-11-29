@@ -15,7 +15,7 @@ def new_user():
     uid = request.args.get('uid', None)
     password = request.args.get('password', None)
     
-    api_key =  None #langstons new user method 
+    api_key =  db.newUser(uid,password) #langstons new user method 
 
     return jsonify(api_key)
 
@@ -26,7 +26,7 @@ def is_valid_login():
     uid = request.args.get('uid', None)
     password = request.args.get('password', None)
     
-    api_key = None #langtons is valid user method
+    api_key = db.isValidLogin(uid,password) #langtons is valid user method
 
     return jsonify(api_key)
 
@@ -36,7 +36,7 @@ def user_exists():
     
     uid = request.args.get('uid', None)
 
-    exists = None #langstons user exits method 
+    exists = db.userExist(uid) #langstons user exits method 
 
     return jsonify(exists)
 
