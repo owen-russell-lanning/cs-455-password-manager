@@ -118,4 +118,10 @@ def createLogin(uid, website, uname, api):
     conn = sqlite3.connect('Password_Manager_Database')
     cur = conn.cursor()
     locCypher = Fernet(api)
+    pword = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16))
+    enword = locCypher.encrypt(pword)
+    cur.execute("INSERT INTO pManager " + uid + ", " + website + ", " + uname + ", " + enword)
+    conn.commit()
+    conn.close()
+    return pword
     
