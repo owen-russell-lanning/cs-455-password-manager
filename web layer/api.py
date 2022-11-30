@@ -2,7 +2,7 @@ __author__ = "Kyler Greenway"
 __date__ = "November 2022" 
 
 import json
-from flask import Flask, jsonify, request
+from flask import Flask, request
 import Database as db
 
 app = Flask(__name__)
@@ -15,9 +15,9 @@ def new_user():
     uid = request.args.get('uid', None)
     password = request.args.get('password', None)
     
-    api_key =  db.newUser(uid,password) #langstons new user method 
+    api_key = db.newUser(uid,password) #langstons new user method 
 
-    return jsonify(api_key)
+    return {"key": api_key}
 
 #Is valid login Request 
 @app.route('/isValidLogin', methods = ['GET', 'POST'])
@@ -28,7 +28,7 @@ def is_valid_login():
     
     api_key = db.isValidLogin(uid,password) #langtons is valid user method
 
-    return jsonify(api_key)
+    return {"key": api_key}
 
 #User exists Request 
 @app.route('/userExists', methods = ['GET', 'POST'])
@@ -38,7 +38,7 @@ def user_exists():
 
     exists = db.userExist(uid) #langstons user exits method 
 
-    return jsonify(exists)
+    return {"bool":exists}
 
 
 #Get Login Request 
@@ -49,9 +49,11 @@ def get_login():
     website = request.args.get('website', None)
     api_key = request.args.get('apiKey', None)
 
-    login = db.getLogin(uid, website, api_key) #langstons get login method
+    uname, password = db.getLogin(uid, website, api_key) #langstons get login method
+    login = {"user":uname, "pass": password}
 
-    return jsonify(login)
+
+    return login
 
 #Set Login Request 
 @app.route('/setLogin', methods = ['GET', 'POST'])
@@ -62,9 +64,9 @@ def set_login():
     password = request.args.get('password', None)
     api_key = request.args.get('apiKey', None)
 
-    login = None #langstons set method
+    login = db.setLogin(uid, website, user, password, api_key) #langstons set method
 
-    return jsonify(login)
+    return {"bool" : True} 
 
 #Create Login Request 
 @app.route('/createLogin', methods = ['GET', 'POST'])
@@ -75,9 +77,9 @@ def create_login():
     user = request.args.get('user', None)
     api_key = request.args.get('apiKey',None)
 
-    password = None # langstons create user method
+    password = db.createLogin(uid, website, user, api_key) # langstons create user method
 
-    return jsonify(password)
+    return {"bool":True }
 
 db.initialize()
 
