@@ -1,8 +1,10 @@
 from cryptography.fernet import Fernet
 import sqlite3
+import random, string
 
 globalAPI = Fernet.generate_key()
 
+#Creates tables of logInfo and pManager
 def initialize():
 
     conn = sqlite3.connect('Password_Manager_Database')
@@ -27,8 +29,8 @@ def initialize():
     conn.commit()
     conn.close()
 
-
-
+# Creates new user and places uid and pword onto the database encryting the pword 
+# returning an API key for user to use in future.
 # @param uid String that is username of new user
 # @param pword String that is a password of new user 
 # @return api is a String apiKey that the user needs to use to login
@@ -43,23 +45,20 @@ def newUser(uid, pword):
     conn.close()
     return api
 
+# Checks if user already exist in database
 # @param uid is A possible username 
-# @return boolean if username matches a username that already exist in the database
+# @return boolean True if uid matches any on the database otherwise false
 def userExist(uid): 
     conn = sqlite3.connect('Password_Manager_Database')
     cur = conn.cursor()
-    #select uid from logInfo
-    cur.execute("SELECT uid FROM logInfo;")
-    uidList = cur.fetchall
+    #select uid from logInfo where uid = uid; 
+    cur.execute("SELECT uid FROM logInfo WHERE uid = " + uid + ";")
+    dbuid = cur.fetchone
     conn.commit()
     conn.close()
-    for x in uidList:
-        cypher = Fernet(globalAPI)
-        uidTemp = cypher.decrypt(x)
-        if uidTemp == uid:
-            return True
-    return False
+    return dbuid == uid
 
+# Checks if the uid and pword are in the database
 # @param uid String that is a possible username
 # @param pword String that is a possible password
 # @param api String that is valid key from the user
@@ -69,25 +68,24 @@ def isVaildLogin(uid, pword): #Change to have global variable
     cur = conn.cursor()
     cypher = Fernet(globalAPI)
     #select uid from logInfo 
-    cur.execute("SELECT uid FROM logInfo WHERE uid = " + uid + ";")
-    dbuid =  cur.fetchone() #uid from database
+    cur.execute("SELECT uid,pmpword FROM logInfo WHERE uid = " + uid + ";")
+    db =  cur.fetchone() #uid from database
     tfUid = False
-    if(dbuid == uid):
-        tfUid = True
-    
-    #select pmpword from logInfo 
-    cur.execute("SELECT pmpword FROM logInfo WHERE pmpword = "+ pword + ";")
-    dbpw = cur.fetchone() #pmpword from database
-
     conn.commit()
     conn.close()
-
+    if(db[0] == uid):
+        tfUid = True
+    
+    dbpw = cypher.decrypt(db[1])
     tfPword = False
     if(dbpw == pword):
         tfPword = True
     
     return tfUid and tfPword
-    
+
+# Get users login info(username, password) for website 
+# @param uid String username for login for database
+# @param website String that will 
 def getLogin(uid, website, api):
     conn = sqlite3.connect('Password_Manager_Database')
     cur = conn.cursor()
@@ -124,4 +122,3 @@ def createLogin(uid, website, uname, api):
     conn.commit()
     conn.close()
     return pword
-    
