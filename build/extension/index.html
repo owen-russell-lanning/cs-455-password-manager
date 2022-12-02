@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Locksmith</title>
+    <meta charset="utf-8">
+    <style>
+        :root {
+            --highlight-color: #521f12;
+            --primary-color: #1c1919;
+            --secondary-color: #212020;
+            --text-color: white;
+            --secondary-text-color: #949494;
+            --tertiary-color: #242323;
+        }
+
+        body {
+            margin: 0;
+            border: none;
+        }
+
+        #locksmith-body {
+            width: 350px;
+            height: 400px;
+
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        #header {
+            width: 100%;
+            height: 50px;
+            background-color: var(--secondary-color);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding-left: 10px;
+            border-bottom: var(--highlight-color) 2px solid;
+            filter: drop-shadow(0 0 5px black);
+        }
+
+
+
+
+        #header>img {
+            height: 40%;
+            margin-right: 10px;
+        }
+
+
+        #page-content {
+            height: 100%;
+            background-color: var(--primary-color);
+            overflow: hidden;
+        }
+
+        #login-page {
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            align-items: center;
+
+        }
+
+        #login-page>.input-icon-wrapper>input {
+            font-size: 17px;
+            width: 180px;
+
+
+        }
+
+        #login-page>.sub-page-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            position: absolute;
+            top: 100px;
+            bottom: 10px;
+            height: fit-content;
+
+
+        }
+
+
+
+        .input-icon-wrapper {
+            display: flex;
+            flex-direction: row;
+            height: fit-content;
+            width: fit-content;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: var(--tertiary-color);
+            margin-bottom: 35px;
+            border-radius: 8px;
+            padding: 0px 5px;
+
+        }
+
+        .input-icon-wrapper>img {
+            height: 20px;
+            width: auto;
+
+            margin: 0;
+        }
+
+        .input-icon-wrapper>* {
+            user-select: none;
+        }
+
+        input {
+
+            background-color: transparent;
+            text-align: start;
+            margin: 0;
+            border: none;
+            color: var(--text-color);
+            padding: 7px 10px;
+
+
+
+
+
+
+        }
+
+
+
+        input::placeholder {
+            text-align: start;
+            color: var(--secondary-text-color);
+        }
+
+        .btn {
+            background-color: var(--highlight-color);
+            padding: 7px 20px;
+            cursor: pointer;
+            user-select: none;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .btn:hover,
+        .img-btn:hover {
+            filter: brightness(95%);
+        }
+
+        .btn:active,
+        .img-btn:active {
+            transform: scale(0.9, 0.9);
+        }
+
+        .img-btn {
+            cursor: pointer;
+            width: fit-content;
+        }
+
+
+        .toggle-btn {
+            padding: 5px 10px;
+            user-select: none;
+            cursor: pointer;
+            border: solid 2px var(--highlight-color);
+            border-radius: 8px;
+            background-color: var(--tertiary-color);
+            filter: drop-shadow(0 0 5px black);
+
+        }
+
+        .toggle-btn:is(.selected) {
+            animation: toggle-btn-toggle 0.3s;
+            background-color: var(--highlight-color);
+        }
+
+        @keyframes toggle-btn-toggle {
+            0% {
+                background-color: transparent;
+            }
+
+            100% {
+                background-color: var(--highlight-color);
+            }
+        }
+
+        #login-method-select {
+            top: 15px;
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: fit-content;
+            z-index: 2;
+        }
+
+
+
+        .error-message {
+            color: red;
+        }
+
+        .hidden {
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+        }
+
+        #dashboard-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+
+        .bubble-display {
+            color: var(--text-color);
+            border-radius: 18px;
+            padding: 5px 10px;
+            width: fit-content;
+            user-select: none;
+            background-color: var(--highlight-color);
+        }
+
+        #dashboard-valid-login-page>div>.input-icon-wrapper,
+        #dashboard-no-login-page>.input-icon-wrapper {
+            margin: 10px 0px;
+
+        }
+
+        #dashboard-page>.sub-page-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: fit-content;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="locksmith-body">
+        <div id="header">
+            <img src="./icons/lock.png">
+            <h2>Locksmith</h2>
+
+        </div>
+        <div id="page-content">
+            <!-- open popup with login page at first-->
+            <div id="login-page">
+                <div id="login-method-select" style="margin-bottom: 20px;">
+                    <h2 id="login-page-button" class="toggle-btn selected">Login</h2>
+                    <h2 id="create-user-page-button" style="margin-left: 20px;" class="toggle-btn">New User</h2>
+                </div>
+                <br>
+                <br>
+                <div id="login-user-page" class="sub-page-content">
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/user.png">
+                        <input id="login-username-input" type="text" placeholder="Username">
+                    </div>
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/lock.png">
+                        <input id="login-password-input" type="password" placeholder="Password">
+                    </div>
+                    <h2 id="login-button" class="btn">Login</h2>
+                    <br>
+                    <h4 class="error-message hidden" id="invalid-login-error">Invalid Login</h4>
+                </div>
+                <div id="login-create-user-page" class="sub-page-content" style="visibility: hidden;">
+                    <h3>Enter a Username to Begin</h3>
+                    <br>
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/user.png">
+                        <input type="text" placeholder="Username" id="create-user-username-input">
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <img id="create-user-button" class="img-btn" style="height: 35px;" src="./icons/right.png">
+                    <br>
+                    <h4 class="error-message hidden" id="create-user-exists-error">Username Already Exists</h4>
+                </div>
+                <div id="login-create-user-password-page" class="sub-page-content" style="visibility: hidden;">
+                    <h2 style="text-align: center;" id="create-password-text"></h2>
+                    <br>
+                    <br>
+                    <h3>Please Create a Password</h3>
+                    <br>
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/lock.png">
+                        <input type="password" placeholder="Password" id="create-user-password-input">
+                    </div>
+                    <img id="finalize-user-button" class="img-btn" style="height: 35px;" src="./icons/right.png">
+                </div>
+
+            </div>
+            <!-- dashboard is the main view for a site once user is logged in-->
+            <div id="dashboard-page" style="visibility: hidden;">
+                <br>
+                <div style="display: flex;">
+                    <h4 class="bubble-display" id="dashboard-site"></h4>
+                    <h4 class="bubble-display" id="dashboard-login-indicator" style="margin-left: 10px;"></h4>
+                </div>
+                <div id="dashboard-no-login-page" class="sub-page-content hidden">
+                    <br>
+                    <br>
+                    <h3>Set a Login for this Page</h3>
+                    <br>
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/user.png">
+                        <input id="site-login-username-input" type="text" placeholder="Username">
+                    </div>
+                    <div class="input-icon-wrapper">
+                        <img src="./icons/lock.png">
+                        <input id="site-login-password-input" type="password" placeholder="Password">
+                    </div>
+                    <br>
+                    <h3 id="dashboard-create-login-btn" class="btn">Create</h3>
+                </div>
+                <div id="dashboard-valid-login-page" class="sub-page-content hidden">
+                    <br>
+                    <br>
+                    <div style="display: flex; flex-direction: row; align-items: center; height: fit-content;">
+                        <div class="input-icon-wrapper">
+                            <img src="./icons/user.png">
+                            <input id="site-valid-login-username-input" type="text" placeholder="Username" readonly
+                                style="width: 185px;">
+                            <img id="copy-valid-username" class="img-btn" src="./icons/copy.png">
+                        </div>
+                        <img class="img-btn" id="edit-username-button" src="./icons/edit.png" style="margin-left: 10px; height: 22px;">
+                    </div>
+                    <div  style="display: flex; flex-direction: row; align-items: center; height: fit-content;">
+                        <div class="input-icon-wrapper">
+                            <img src="./icons/lock.png">
+                            <input id="site-valid-login-password-input" type="password" placeholder="Password" readonly>
+                            <img id="site-valid-login-unhide" class="img-btn" src="./icons/seen.png"
+                                style="margin-right: 5px;">
+                            <img id="copy-valid-password" class="img-btn" src="./icons/copy.png">
+
+                        </div>
+                        <img class="img-btn" id="edit-password-button" src="./icons/edit.png"style="margin-left: 10px; height: 22px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script src="./script.js"></script>
+
+</html>
