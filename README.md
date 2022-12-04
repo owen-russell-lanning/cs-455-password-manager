@@ -8,7 +8,10 @@ Langston Aron\
 Kyler Greenway
 
 ## Installation
+Clone the build directory to your local machine. Make sure you have python 3 installed alongside the flask and fernet packages. 
+
 ### Server Setup
+
 
 ### Extension Setup
 
