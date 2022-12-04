@@ -139,6 +139,13 @@ def setLogin(uid, website, uname, pword, api):
     conn.commit()
     conn.close()
 
+def removeLogin(uid, website, api):
+    conn = sqlite3.connect(databaseFile)
+    cur = conn.cursor()
+    cur.execute("DELETE FROM pManager WHERE uid =\"" +uid+"\" AND website=\""+website+"\"")
+    conn.commit()
+    conn.close()
+
 def createLogin(uid, website, uname, api):
     conn = sqlite3.connect(databaseFile)
     cur = conn.cursor()

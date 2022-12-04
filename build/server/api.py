@@ -74,6 +74,17 @@ def set_login():
 
     return {"bool" : True} 
 
+#Remove login from user
+@app.route('/removeLogin', methods=['GET','POST'])
+def remove_login():
+    uid = request.args.get('uid', None)
+    website = request.args.get('website', None)
+    api_key = request.args.get('apiKey', None)
+
+    db.removeLogin(uid, website,  api_key) #langstons remove method
+
+    return {"bool" : True} 
+
 #Create Login Request 
 @app.route('/createLogin', methods = ['GET', 'POST'])
 def create_login():

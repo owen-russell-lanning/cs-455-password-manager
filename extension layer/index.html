@@ -242,6 +242,92 @@
             align-items: center;
             height: fit-content;
         }
+
+        #dashboard-options-wrapper {
+            position: absolute;
+            bottom: 10px;
+            padding-left: 5%;
+            padding-right: 5%;
+            width: 90%;
+            background-color: var(--secondary-color);
+            padding-top: 10px;
+            left: 0;
+            border-top: 2px solid var(--highlight-color);
+        
+        }
+
+        #dashboard-options-wrapper > .row-wrapper{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        /**
+        SLIDER CSS MODIFIED FROM W3SCHOOLS
+        **/
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 35px;
+            height: 22px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: var(--highlight-color);
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px var(--highlight-color);
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(12px);
+            -ms-transform: translateX(12px);
+            transform: translateX(12px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 17px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
     </style>
 
 </head>
@@ -337,9 +423,10 @@
                                 style="width: 185px;">
                             <img id="copy-valid-username" class="img-btn" src="./icons/copy.png">
                         </div>
-                        <img class="img-btn" id="edit-username-button" src="./icons/edit.png" style="margin-left: 10px; height: 22px;">
+                        <img class="img-btn" id="edit-username-button" src="./icons/edit.png"
+                            style="margin-left: 10px; height: 22px;">
                     </div>
-                    <div  style="display: flex; flex-direction: row; align-items: center; height: fit-content;">
+                    <div style="display: flex; flex-direction: row; align-items: center; height: fit-content;">
                         <div class="input-icon-wrapper">
                             <img src="./icons/lock.png">
                             <input id="site-valid-login-password-input" type="password" placeholder="Password" readonly>
@@ -348,7 +435,19 @@
                             <img id="copy-valid-password" class="img-btn" src="./icons/copy.png">
 
                         </div>
-                        <img class="img-btn" id="edit-password-button" src="./icons/edit.png"style="margin-left: 10px; height: 22px;">
+                        <img class="img-btn" id="edit-password-button" src="./icons/edit.png"
+                            style="margin-left: 10px; height: 22px;">
+                    </div>
+                </div>
+
+                <!--options-->
+                <div id="dashboard-options-wrapper">
+                    <div class="row-wrapper">
+                        <h3>Autofill Login and Password</h3>
+                    <label class="switch">
+                        <input type="checkbox" id="autofill-switch">
+                        <span class="slider round"></span>
+                    </label>
                     </div>
                 </div>
             </div>

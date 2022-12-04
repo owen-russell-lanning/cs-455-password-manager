@@ -105,20 +105,36 @@ function init_login_page() {
 
         //change to loading
         this.replaceWith(DEFAULT_LOADING);
+        DEFAULT_LOADING.replaced = this; //store in object to avoid garbage collection
+        check_login_and_proceed(username, password);
 
-        is_valid_login(username, password, (api_key) => {
-            DEFAULT_LOADING.replaceWith(this);
-            if (!api_key) {
-                document.getElementById("invalid-login-error").classList.remove("hidden");
-            }
-            else {
-                login = { username: username, password: password }
-                receive_api_key(api_key);
-            }
-        });
     }
 
 
+    //if login is stored move past login page
+    chrome.storage.local.get(["locksmith_login"]).then((result) => {
+        var lock_login = result.locksmith_login;
+        if (lock_login != null) {
+            window.login = JSON.parse(lock_login);
+
+            //continue login
+            check_login_and_proceed(window.login.username, window.login.password);
+        }
+    });
+
+}
+
+function check_login_and_proceed(username, password) {
+    is_valid_login(username, password, (api_key) => {
+        DEFAULT_LOADING.replaceWith(DEFAULT_LOADING.replaced);
+        if (!api_key) {
+            document.getElementById("invalid-login-error").classList.remove("hidden");
+        }
+        else {
+            login = { username: username, password: password }
+            receive_api_key(api_key);
+        }
+    });
 }
 
 /**
@@ -127,8 +143,9 @@ function init_login_page() {
  */
 function receive_api_key(api_key) {
     //store api key locally and login
-    localStorage.setItem("api_key", api_key);
-    localStorage.setItem("login", login); //TODO: ENCRYPT LOGIN
+    chrome.storage.local.set({ locksmith_api_key: api_key });
+    var login_str = JSON.stringify(login);
+    chrome.storage.local.set({ locksmith_login: login_str });//TODO: ENCRYPT LOGIN
 
     //load dashboard as current page now that logged in
     load_dashboard();
@@ -175,7 +192,6 @@ async function load_dashboard() {
                 this.replaceWith(DEFAULT_LOADING);
 
 
-
                 set_login(login.username, url.hostname, site_username, site_password, (result) => {
                     document.getElementById("site-login-username-input").value = "";
                     document.getElementById("site-login-password-input").value = "";
@@ -184,6 +200,9 @@ async function load_dashboard() {
                     load_dashboard();
 
                 });
+
+
+
 
             };
         }
@@ -265,9 +284,12 @@ async function load_dashboard() {
                 inp.focus();
                 inp.onblur = () => {
                     inp.setAttribute("readonly", "true");
-                    set_login(login.username, url.hostname, is_login.username, inp.value, () => {
-                        //reload dashboard
-                        load_dashboard();
+                    //remove login then add new login
+                    remove_login(login.username, url.hostname, (result) => {
+                        set_login(login.username, url.hostname, is_login.username, inp.value, () => {
+                            //reload dashboard
+                            load_dashboard();
+                        });
                     });
                 }
 
@@ -275,6 +297,21 @@ async function load_dashboard() {
             }
 
 
+        }
+    });
+
+    //set autofill switch value
+    var autofill_switch = document.getElementById("autofill-switch");
+    autofill_switch.setting = false;
+    autofill_switch.addEventListener("change", (e) => {
+        autofill_switch.setting = !autofill_switch.setting;
+        chrome.storage.local.set({ autofill_switch: autofill_switch.setting });
+    })
+
+    //get the saved value
+    chrome.storage.local.get(["autofill_switch"]).then((result) => {
+        if (result.autofill_switch === true) {
+            autofill_switch.click();
         }
     });
 
@@ -329,7 +366,7 @@ function is_valid_login(username, password, callback) {
     })).then(result => result.json()).then((response) => {
         //feed response to callback
         if (response.hasOwnProperty("key")) {
-         
+
             callback(response.key);
         }
     });
@@ -365,20 +402,24 @@ function create_user(username, password, callback) {
  * @param {*} callback 
  */
 function get_login(username, website, callback) {
-    var api_key = localStorage.getItem("api_key");
-    //call api server check if the user has a login for this website and if so, get the login
-    fetch(API_HOST + "/getLogin?" + new URLSearchParams({
-        uid: username,
-        website: website,
-        apiKey: api_key
-    })).then(result => result.json()).then((response) => {
-        //get login if theres a login for the site
-        if (response !== "false" && response.hasOwnProperty("user") && response.hasOwnProperty("pass")) {
-            callback({username:response.user, password:response.pass});
-        }
-        else{
-            callback(false);
-        }
+    chrome.storage.local.get(["locksmith_api_key"]).then((result) => {
+        var api_key = result.locksmith_api_key
+
+
+        //call api server check if the user has a login for this website and if so, get the login
+        fetch(API_HOST + "/getLogin?" + new URLSearchParams({
+            uid: username,
+            website: website,
+            apiKey: api_key
+        })).then(result => result.json()).then((response) => {
+            //get login if theres a login for the site
+            if (response !== "false" && response.hasOwnProperty("user") && response.hasOwnProperty("pass")) {
+                callback({ username: response.user, password: response.pass });
+            }
+            else {
+                callback(false);
+            }
+        });
     });
 
 
@@ -393,19 +434,42 @@ function get_login(username, website, callback) {
  * @param {*} site_password 
  */
 function set_login(username, website, site_username, site_password, callback) {
-    var api_key = localStorage.getItem("api_key");
-    fetch(API_HOST + "/setLogin?" + new URLSearchParams({
-        uid: username,
-        password: site_password,
-        user: site_username,
-        website: website, 
-        apiKey: api_key
+    chrome.storage.local.get(["locksmith_api_key"]).then((result) => {
+        var api_key = result.locksmith_api_key;
+        fetch(API_HOST + "/setLogin?" + new URLSearchParams({
+            uid: username,
+            password: site_password,
+            user: site_username,
+            website: website,
+            apiKey: api_key
 
-    })).then(result => result.json()).then((response) => {
-        //get key element
-        callback(true);
+        })).then(result => result.json()).then((response) => {
+            //get key element
+            callback(true);
+        });
     });
 
+}
+
+/**
+ * removes the login for the website from the database
+ * @param {*} username 
+ * @param {*} website 
+ * @param {*} callback 
+ */
+function remove_login(username, website, callback) {
+    chrome.storage.local.get(["locksmith_api_key"]).then((result) => {
+        var api_key = result.locksmith_api_key;
+        fetch(API_HOST + "/removeLogin?" + new URLSearchParams({
+            uid: username,
+            website: website,
+            apiKey: api_key
+
+        })).then(result => result.json()).then((response) => {
+            //get key element
+            callback(true);
+        });
+    });
 }
 
 /**
