@@ -5,7 +5,7 @@ Locksmith is a barebones, multiple-user password manager. It has a python-based 
 ### Authors
 Owen Russell-Lanning\
 Langston Aron\
-Kyler Greenway\
+Kyler Greenway
 
 ### Warning
 Do not use in a professional enviroment. Prone to SQL Injection
