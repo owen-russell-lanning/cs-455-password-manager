@@ -7,6 +7,7 @@ import Database as db
 
 app = Flask(__name__)
 
+
 #New User Request 
 @app.route("/newUser", methods = ['GET', 'POST'])
 def new_user():
