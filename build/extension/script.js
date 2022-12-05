@@ -436,16 +436,25 @@ function get_login(username, website, callback) {
 function set_login(username, website, site_username, site_password, callback) {
     chrome.storage.local.get(["locksmith_api_key"]).then((result) => {
         var api_key = result.locksmith_api_key;
-        fetch(API_HOST + "/setLogin?" + new URLSearchParams({
+        fetch(API_HOST + "/removeLogin?" + new URLSearchParams({
             uid: username,
-            password: site_password,
-            user: site_username,
             website: website,
             apiKey: api_key
 
-        })).then(result => result.json()).then((response) => {
-            //get key element
-            callback(true);
+        })).then(() => {
+
+
+            fetch(API_HOST + "/setLogin?" + new URLSearchParams({
+                uid: username,
+                password: site_password,
+                user: site_username,
+                website: website,
+                apiKey: api_key
+
+            })).then(result => result.json()).then((response) => {
+                //get key element
+                callback(true);
+            });
         });
     });
 
